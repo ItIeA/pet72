@@ -70,6 +70,11 @@ export function PetListings({ search, selectedType }: PetListingsProps) {
                   src={listing.imageUrl}
                   alt={`${listing.breed}`}
                   className="object-cover w-full h-full"
+                  onLoad={() => console.log(`Image loaded for listing ${listing.id}`)}
+                  onError={(e) => {
+                    console.error(`Image error for listing ${listing.id}:`, e);
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
                 />
               </div>
             )}

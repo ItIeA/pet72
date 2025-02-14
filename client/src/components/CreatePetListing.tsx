@@ -48,11 +48,28 @@ export function CreatePetListing() {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        toast({
+          title: "Ошибка",
+          description: "Размер файла не должен превышать 5MB",
+          variant: "destructive",
+        });
+        return;
+      }
+
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64 = reader.result as string;
+        console.log("Image loaded, first 100 chars:", base64.substring(0, 100));
         setPreview(base64);
         form.setValue("imageBase64", base64);
+      };
+      reader.onerror = () => {
+        toast({
+          title: "Ошибка",
+          description: "Не удалось загрузить изображение",
+          variant: "destructive",
+        });
       };
       reader.readAsDataURL(file);
     }

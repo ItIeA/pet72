@@ -30,6 +30,7 @@ export class MemStorage implements IStorage {
       imageUrl: insertListing.imageBase64 || null,
     };
 
+    console.log("Creating listing with image URL length:", listing.imageUrl?.length || 0);
     this.listings.set(id, listing);
     return listing;
   }
