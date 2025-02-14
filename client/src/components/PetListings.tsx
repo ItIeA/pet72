@@ -64,7 +64,7 @@ export function PetListings({ search, selectedType }: PetListingsProps) {
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
-            {listing.imageUrl && (
+            {listing.imageUrl && listing.imageUrl.startsWith('data:image') && (
               <div className="relative aspect-video overflow-hidden rounded-md">
                 <img
                   src={listing.imageUrl}

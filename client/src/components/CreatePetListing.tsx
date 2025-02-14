@@ -48,7 +48,18 @@ export function CreatePetListing() {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+      // Проверяем тип файла
+      if (!file.type.startsWith('image/')) {
+        toast({
+          title: "Ошибка",
+          description: "Пожалуйста, загрузите изображение",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Проверяем размер файла (5MB)
+      if (file.size > 5 * 1024 * 1024) {
         toast({
           title: "Ошибка",
           description: "Размер файла не должен превышать 5MB",
@@ -60,7 +71,7 @@ export function CreatePetListing() {
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64 = reader.result as string;
-        console.log("Image loaded, first 100 chars:", base64.substring(0, 100));
+        console.log("Image loaded, format:", base64.substring(0, 30));
         setPreview(base64);
         form.setValue("imageBase64", base64);
       };
@@ -166,10 +177,28 @@ export function CreatePetListing() {
 
             <div className="space-y-2">
               <FormLabel>Фото питомца</FormLabel>
-              <Input type="file" accept="image/*" onChange={handleImageChange} />
+              <Input 
+                type="file" 
+                accept="image/*" 
+                onChange={handleImageChange}
+                className="cursor-pointer"
+              />
               {preview && (
                 <div className="mt-2">
-                  <img src={preview} alt="Предпросмотр" className="max-w-xs rounded-lg" />
+                  <img 
+                    src={preview} 
+                    alt="Предпросмотр" 
+                    className="max-w-xs rounded-lg"
+                    onError={() => {
+                      setPreview(undefined);
+                      form.setValue("imageBase64", "");
+                      toast({
+                        title: "Ошибка",
+                        description: "Не удалось загрузить изображение",
+                        variant: "destructive",
+                      });
+                    }}
+                  />
                 </div>
               )}
             </div>
