@@ -10,7 +10,7 @@ interface PetListingsProps {
 }
 
 export function PetListings({ search, selectedType }: PetListingsProps) {
-  const { data: listings = [], isLoading } = useQuery<PetListing[]>({
+  const { data: listings = [], isLoading, isError } = useQuery<PetListing[]>({
     queryKey: ["/api/listings"],
   });
 
@@ -24,6 +24,14 @@ export function PetListings({ search, selectedType }: PetListingsProps) {
 
     return matchesSearch && matchesType;
   });
+
+  if (isError) {
+    return (
+      <div className="flex items-center justify-center min-h-[200px]">
+        <p className="text-destructive">Ошибка загрузки объявлений</p>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -44,20 +52,7 @@ export function PetListings({ search, selectedType }: PetListingsProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {filteredListings.map((listing) => (
-        <Card key={listing.id} className="overflow-hidden">
-          {listing.imageUrl && (
-            <div className="aspect-video relative">
-              <img
-                src={listing.imageUrl}
-                alt={`${listing.breed}`}
-                className="absolute inset-0 w-full h-full object-cover"
-                onError={(e) => {
-                  // Hide broken images
-                  (e.target as HTMLImageElement).style.display = 'none';
-                }}
-              />
-            </div>
-          )}
+        <Card key={listing.id}>
           <CardHeader className="space-y-1">
             <div className="flex items-center justify-between">
               <CardTitle className="text-xl">{listing.breed}</CardTitle>
@@ -68,8 +63,17 @@ export function PetListings({ search, selectedType }: PetListingsProps) {
               {listing.location}
             </div>
           </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground mb-4">{listing.description}</p>
+          <CardContent className="space-y-4">
+            {listing.imageUrl && (
+              <div className="relative aspect-video overflow-hidden rounded-md">
+                <img
+                  src={listing.imageUrl}
+                  alt={`${listing.breed}`}
+                  className="object-cover w-full h-full"
+                />
+              </div>
+            )}
+            <p className="text-sm text-muted-foreground">{listing.description}</p>
             <p className="text-sm font-medium">Контакт: {listing.contactInfo}</p>
           </CardContent>
         </Card>
