@@ -49,10 +49,11 @@ export function CreatePetListing() {
     const file = e.target.files?.[0];
     if (file) {
       // Проверяем тип файла
-      if (!file.type.startsWith('image/')) {
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+      if (!allowedTypes.includes(file.type)) {
         toast({
-          title: "Ошибка",
-          description: "Пожалуйста, загрузите изображение",
+          title: "Неподдерживаемый формат",
+          description: "Пожалуйста, загрузите изображение в формате JPEG, PNG, GIF или WebP",
           variant: "destructive",
         });
         return;
@@ -177,17 +178,17 @@ export function CreatePetListing() {
 
             <div className="space-y-2">
               <FormLabel>Фото питомца</FormLabel>
-              <Input 
-                type="file" 
-                accept="image/*" 
+              <Input
+                type="file"
+                accept="image/jpeg, image/png, image/gif, image/webp"
                 onChange={handleImageChange}
                 className="cursor-pointer"
               />
               {preview && (
                 <div className="mt-2">
-                  <img 
-                    src={preview} 
-                    alt="Предпросмотр" 
+                  <img
+                    src={preview}
+                    alt="Предпросмотр"
                     className="max-w-xs rounded-lg"
                     onError={() => {
                       setPreview(undefined);
