@@ -21,4 +21,4 @@ export const insertPetListingSchema = createInsertSchema(petListings).omit({
 export type InsertPetListing = z.infer<typeof insertPetListingSchema>;
 export type PetListing = typeof petListings.$inferSelect;
 
-export const petTypes = ["Dog", "Cat", "Bird", "Fish", "Other"] as const;
+export const petTypes = ["Собака", "Кошка", "Птица", "Рыбка", "Другое"] as const;
