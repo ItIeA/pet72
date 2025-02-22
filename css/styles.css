@@ -1,0 +1,52 @@
+/* Базовые стили */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Общие стили */
+* {
+  @apply border-border;
+}
+
+body {
+  @apply font-sans antialiased bg-background text-foreground;
+}
+
+/* Заголовки */
+.page-title {
+  @apply text-4xl font-bold text-center mb-8 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent;
+}
+
+/* Карточки */
+.card {
+  @apply bg-card text-card-foreground rounded-lg border shadow-sm;
+}
+
+/* Формы */
+.form-container {
+  @apply space-y-4;
+}
+
+.input-field {
+  @apply w-full rounded-md border border-input bg-background px-3 py-2;
+}
+
+/* Кнопки */
+.button-primary {
+  @apply bg-primary text-primary-foreground hover:bg-primary/90;
+}
+
+/* Сетка */
+.grid-layout {
+  @apply grid gap-8 md:grid-cols-[1fr_400px];
+}
+
+/* Поиск и фильтры */
+.search-filters {
+  @apply flex flex-col sm:flex-row gap-4 mb-8;
+}
+
+/* Списки */
+.listings-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4;
+}
